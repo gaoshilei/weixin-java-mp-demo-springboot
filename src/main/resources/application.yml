@@ -3,9 +3,13 @@ server:
 
 logging:
   level:
+    ROOT: INFO
     org.springframework.web: INFO
     com.github.binarywang.demo.wx.mp: DEBUG
     me.chanjar.weixin: DEBUG
+    file: /data/logs/${spring.application.name}/${spring.application.name}.log
+    register-shutdown-hook: true
+
 wx:
   mp:
     configs:
@@ -13,3 +17,4 @@ wx:
         secret: 664536af8a3fc2b4356aa69ccbf4a315
         token: w7TeXqr1W2gdStts
         aesKey: 5wg5VymHzRO1CfssFw0P6hvkvlu9pO0vvBbx3fQIDiz
+
