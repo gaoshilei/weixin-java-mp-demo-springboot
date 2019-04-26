@@ -8,7 +8,6 @@ logging:
     com.github.binarywang.demo.wx.mp: DEBUG
     me.chanjar.weixin: DEBUG
     file: /data/logs/${spring.application.name}/${spring.application.name}.log
-    register-shutdown-hook: true
 
 wx:
   mp:
