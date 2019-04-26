@@ -11,6 +11,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import javax.xml.ws.Action;
 
@@ -21,6 +23,7 @@ import javax.xml.ws.Action;
 @RequestMapping("/wx/redirect/{appid}")
 public class WxRedirectController {
     private WxMpService wxService;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public WxRedirectController(WxMpService wxService) {
@@ -29,6 +32,7 @@ public class WxRedirectController {
 
     @RequestMapping("/greet")
     public String greetUser(@PathVariable String appid, @RequestParam String code, ModelMap map) {
+        this.logger.debug("\n/wx/redirect===>>>appid={}",appid);
         if (!this.wxService.switchover(appid)) {
             throw new IllegalArgumentException(String.format("未找到对应appid=[%s]的配置，请核实！", appid));
         }

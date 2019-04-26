@@ -18,6 +18,9 @@ import java.net.URL;
 
 import static me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 /**
  * @author Binary Wang(https://github.com/binarywang)
  */
@@ -25,6 +28,7 @@ import static me.chanjar.weixin.common.api.WxConsts.MenuButtonType;
 @RequestMapping("/wx/menu/{appid}")
 public class WxMenuController {
     private WxMpService wxService;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public WxMenuController(WxMpService wxService) {
@@ -96,6 +100,7 @@ public class WxMenuController {
                 String.format("%s://%s/wx/redirect/%s/greet", requestURL.getProtocol(), requestURL.getHost(), appid),
                 WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
             button34.setUrl(url);
+            this.logger.debug("\nbutton34链接======>>>>>>{}",url);
         }
 
         button3.getSubButtons().add(button31);
