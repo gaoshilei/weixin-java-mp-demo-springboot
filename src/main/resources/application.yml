@@ -3,11 +3,10 @@ server:
 
 logging:
   level:
-    ROOT: INFO
     org.springframework.web: INFO
     com.github.binarywang.demo.wx.mp: DEBUG
     me.chanjar.weixin: DEBUG
-    file: /data/logs/wechat.log
+    file: /data/logs/weixin-mp.log
 wx:
   mp:
     configs:
