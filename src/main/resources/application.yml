@@ -12,7 +12,7 @@ logging:
     org.springframework.web: INFO
     com.github.binarywang.demo.wx.mp: DEBUG
     me.chanjar.weixin: DEBUG
-    file: /data/logs/${spring.application.name}.log
+  file: /data/logs/${spring.application.name}.log
 wx:
   mp:
     configs:
