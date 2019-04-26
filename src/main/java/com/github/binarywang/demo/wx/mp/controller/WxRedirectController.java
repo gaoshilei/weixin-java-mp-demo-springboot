@@ -32,7 +32,7 @@ public class WxRedirectController {
 
     @RequestMapping("/greet")
     public String greetUser(@PathVariable String appid, @RequestParam String code, ModelMap map) {
-        this.logger.debug("\n/wx/redirect===>>>appid={}",appid);
+        this.logger.debug("\n/wx/redirect===>>>appid={}=====code={}",appid,code);
         if (!this.wxService.switchover(appid)) {
             throw new IllegalArgumentException(String.format("未找到对应appid=[%s]的配置，请核实！", appid));
         }
@@ -40,6 +40,8 @@ public class WxRedirectController {
         try {
             WxMpOAuth2AccessToken accessToken = wxService.oauth2getAccessToken(code);
             WxMpUser user = wxService.oauth2getUserInfo(accessToken, null);
+            this.logger.debug("\n/wx/redirect===>>>user={}",user);
+            this.logger.debug("\nmap={}",map);
             map.put("user", user);
         } catch (WxErrorException e) {
             e.printStackTrace();
