@@ -1,12 +1,21 @@
 server:
     port: 80
 
+spring:
+    application:
+        name: weixin-mp
+    profiles:
+        active: dev
+
 logging:
   level:
     org.springframework.web: INFO
     com.github.binarywang.demo.wx.mp: DEBUG
     me.chanjar.weixin: DEBUG
-    file: /data/logs/weixin-mp.log
+    file: /data/logs/saas/${spring.application.name}.log
+    logback:
+        logdir: /data/logs/saas/backup/${spring.application.name}.log
+        appname: weixin-mp
 wx:
   mp:
     configs:
