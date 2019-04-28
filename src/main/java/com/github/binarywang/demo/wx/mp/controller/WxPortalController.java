@@ -95,7 +95,7 @@ public class WxPortalController {
             this.logger.debug("\n");
 
             try {
-                if (xmlMsg.getContent().equals("模板消息")) {
+                if (xmlMsg.getContent()!=null&&xmlMsg.getContent().equals("模板消息")) {
                     this.logger.debug("\n收到消息，需要回复!");
                     this.testSendTemplateMessage(openid);
                 } else {
@@ -144,19 +144,19 @@ public class WxPortalController {
             .templateId("P89atWk3Igr2uSfi8sxhiFQQfG1-xI8sgYe-K6bdvKI")
             .build();
         tm.addData(
-            new WxMpTemplateData("first", "您好，您的保单已承保成功。", "#FF00FF"));
+            new WxMpTemplateData("first", "您好，您的保单已承保成功。", "#000000"));
         tm.addData(
             new WxMpTemplateData("keyword1", "珠江汇赢一号终身寿险（万能型）（2015版）", "#1890ff"));
         tm.addData(
-            new WxMpTemplateData("keyword2", "王大锤", "#FF00FF"));
+            new WxMpTemplateData("keyword2", "王大锤", "#000000"));
         tm.addData(
-            new WxMpTemplateData("keyword3", "38167478149867809", "#FF00FF"));
+            new WxMpTemplateData("keyword3", "38167478149867809", "#000000"));
         tm.addData(
-            new WxMpTemplateData("keyword4", "2016年8月4日", "#FF00FF"));
+            new WxMpTemplateData("keyword4", "2016年8月4日", "#000000"));
         tm.addData(
-            new WxMpTemplateData("keyword5", "19238元", "#FF00FF"));
+            new WxMpTemplateData("keyword5", "19238元", "#000000"));
         tm.addData(
-            new WxMpTemplateData("remark", "请登陆www.prlife.com.cn下载和确认电子保单，并完成在线回访。", "#FF00FF"));
+            new WxMpTemplateData("remark", "请登陆www.prlife.com.cn下载和确认电子保单，并完成在线回访。", "#000000"));
         String msgId = this.wxService.getTemplateMsgService().sendTemplateMsg(tm);
     }
 
