@@ -91,7 +91,7 @@ public class WxPortalController {
             // 明文传输的消息
 
             try {
-                this.testSendTemplateMessage();
+                this.testSendTemplateMessage(openid);
             } catch (WxErrorException e) {
                 e.printStackTrace();
             }
@@ -132,9 +132,9 @@ public class WxPortalController {
         return null;
     }
 
-    private void testSendTemplateMessage() throws WxErrorException {
+    private void testSendTemplateMessage(String openid) throws WxErrorException {
         WxMpTemplateMessage tm = WxMpTemplateMessage.builder()
-            .toUser("")
+            .toUser(openid)
             .templateId("Arg7F-StE05P7Cf1e7IzHCr2s-_WnJOFVid1-eIompo")
             .build();
         tm.addData(
