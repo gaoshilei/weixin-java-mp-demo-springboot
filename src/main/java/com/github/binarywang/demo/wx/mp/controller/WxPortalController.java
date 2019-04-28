@@ -92,10 +92,12 @@ public class WxPortalController {
 
             try {
                 WxMpXmlMessage xmlMsg = WxMpXmlMessage.fromXml(requestBody);
-                if (xmlMsg.getStatus().equals("success")) {
-                    return null;
+                if (!xmlMsg.getStatus().equals("success")) {
+                    this.logger.debug("\n收到消息，需要回复!");
+                    this.testSendTemplateMessage(openid);
+                }else {
+                    this.logger.debug("\nxmlMsg===>>>{}",xmlMsg);
                 }
-                this.testSendTemplateMessage(openid);
             } catch (WxErrorException e) {
                 e.printStackTrace();
             }
