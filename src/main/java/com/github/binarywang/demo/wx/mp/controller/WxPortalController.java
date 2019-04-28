@@ -1,6 +1,8 @@
 package com.github.binarywang.demo.wx.mp.controller;
 
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
+import me.chanjar.weixin.mp.api.WxMpTemplateMsgService;
+import me.chanjar.weixin.mp.api.impl.WxMpTemplateMsgServiceImpl;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -19,6 +21,8 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
+import sun.jvm.hotspot.utilities.Assert;
+import me.chanjar.weixin.common.error.WxErrorException;
 
 /**
  * @author Binary Wang(https://github.com/binarywang)
@@ -79,21 +83,28 @@ public class WxPortalController {
             throw new IllegalArgumentException(String.format("未找到对应appid=[%s]的配置，请核实！", appid));
         }
 
-        if (!wxService.checkSignature(timestamp, nonce, signature)) {
+        if (!this.wxService.checkSignature(timestamp, nonce, signature)) {
             throw new IllegalArgumentException("非法请求，可能属于伪造的请求！");
         }
 
         String out = null;
         if (encType == null) {
             // 明文传输的消息
-            WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(requestBody);
-            this.logger.debug("\n自动回复消息===>>>{}",inMessage);
-            WxMpXmlOutMessage outMessage = this.route(inMessage);
-            if (outMessage == null) {
-                return "";
+
+            try {
+                this.testSendTemplateMessage();
+            } catch (WxErrorException e) {
+                e.printStackTrace();
             }
 
-            out = outMessage.toXml();
+//            WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(requestBody);
+//            this.logger.debug("\n自动回复消息===>>>{}", inMessage);
+//            WxMpXmlOutMessage outMessage = this.route(inMessage);
+//            if (outMessage == null) {
+//                return "";
+//            }
+//
+//            out = outMessage.toXml();
         } else if ("aes".equalsIgnoreCase(encType)) {
             // aes加密的消息
             WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(requestBody, wxService.getWxMpConfigStorage(),
@@ -120,6 +131,18 @@ public class WxPortalController {
         }
 
         return null;
+    }
+
+    private void testSendTemplateMessage() throws WxErrorException {
+        WxMpTemplateMessage tm = WxMpTemplateMessage.builder()
+            .toUser("")
+            .templateId("Arg7F-StE05P7Cf1e7IzHCr2s-_WnJOFVid1-eIompo")
+            .build();
+        tm.addData(
+            new WxMpTemplateData("first", "哈哈哈啊哈", "#FF00FF"));
+        tm.addData(
+            new WxMpTemplateData("remark", "哦哦哦哦哦哦", "#FF00FF"));
+        String msgId = this.wxService.getTemplateMsgService().sendTemplateMsg(tm);
     }
 
 }
