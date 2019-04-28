@@ -21,7 +21,6 @@ import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
-import sun.jvm.hotspot.utilities.Assert;
 import me.chanjar.weixin.common.error.WxErrorException;
 
 /**
