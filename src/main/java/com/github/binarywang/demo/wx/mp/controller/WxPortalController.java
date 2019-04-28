@@ -72,7 +72,7 @@ public class WxPortalController {
                        @RequestParam("timestamp") String timestamp,
                        @RequestParam("nonce") String nonce,
                        @RequestParam("openid") String openid,
-                       @RequestParam("status") String status,
+                       @RequestParam(name = "status", required = false) String status,
                        @RequestParam(name = "encrypt_type", required = false) String encType,
                        @RequestParam(name = "msg_signature", required = false) String msgSignature) {
         this.logger.info("\n接收微信请求：[openid=[{}], [signature=[{}], encType=[{}], msgSignature=[{}],"
@@ -93,11 +93,11 @@ public class WxPortalController {
 
             try {
                 WxMpXmlMessage xmlMsg = WxMpXmlMessage.fromXml(requestBody);
-                if (!status.equals("success")) {
+                if (status.equals("success")) {
+                    this.logger.debug("\nxmlMsg===>>>{}", xmlMsg);
+                } else {
                     this.logger.debug("\n收到消息，需要回复!");
                     this.testSendTemplateMessage(openid);
-                }else {
-                    this.logger.debug("\nxmlMsg===>>>{}",xmlMsg);
                 }
             } catch (WxErrorException e) {
                 e.printStackTrace();
