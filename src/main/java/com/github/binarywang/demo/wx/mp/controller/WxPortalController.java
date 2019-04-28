@@ -91,6 +91,10 @@ public class WxPortalController {
             // 明文传输的消息
 
             try {
+                WxMpXmlMessage xmlMsg = WxMpXmlMessage.fromXml(requestBody);
+                if (xmlMsg.getStatus().equals("success")) {
+                    return null;
+                }
                 this.testSendTemplateMessage(openid);
             } catch (WxErrorException e) {
                 e.printStackTrace();
@@ -135,12 +139,22 @@ public class WxPortalController {
     private void testSendTemplateMessage(String openid) throws WxErrorException {
         WxMpTemplateMessage tm = WxMpTemplateMessage.builder()
             .toUser(openid)
-            .templateId("Arg7F-StE05P7Cf1e7IzHCr2s-_WnJOFVid1-eIompo")
+            .templateId("P89atWk3Igr2uSfi8sxhiFQQfG1-xI8sgYe-K6bdvKI")
             .build();
         tm.addData(
-            new WxMpTemplateData("first", "哈哈哈啊哈", "#FF00FF"));
+            new WxMpTemplateData("first", "您好，您的保单已承保成功。", "#FF00FF"));
         tm.addData(
-            new WxMpTemplateData("remark", "哦哦哦哦哦哦", "#FF00FF"));
+            new WxMpTemplateData("keyword1", "珠江汇赢一号终身寿险（万能型）（2015版）", "#1890ff"));
+        tm.addData(
+            new WxMpTemplateData("keyword2", "王大锤", "#FF00FF"));
+        tm.addData(
+            new WxMpTemplateData("keyword3", "38167478149867809", "#FF00FF"));
+        tm.addData(
+            new WxMpTemplateData("keyword4", "2016年8月4日", "#FF00FF"));
+        tm.addData(
+            new WxMpTemplateData("keyword5", "19238元", "#FF00FF"));
+        tm.addData(
+            new WxMpTemplateData("remark", "请登陆www.prlife.com.cn下载和确认电子保单，并完成在线回访。", "#FF00FF"));
         String msgId = this.wxService.getTemplateMsgService().sendTemplateMsg(tm);
     }
 
