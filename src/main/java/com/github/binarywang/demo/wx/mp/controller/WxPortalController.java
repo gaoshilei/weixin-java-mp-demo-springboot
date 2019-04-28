@@ -1,6 +1,7 @@
 package com.github.binarywang.demo.wx.mp.controller;
 
 import me.chanjar.weixin.mp.api.WxMpMessageRouter;
+import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
 import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
+
+import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 
 /**
  * @author Binary Wang(https://github.com/binarywang)
@@ -84,6 +87,7 @@ public class WxPortalController {
         if (encType == null) {
             // 明文传输的消息
             WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(requestBody);
+            this.logger.debug("\n自动回复消息===>>>{}",inMessage);
             WxMpXmlOutMessage outMessage = this.route(inMessage);
             if (outMessage == null) {
                 return "";
@@ -102,6 +106,7 @@ public class WxPortalController {
 
             out = outMessage.toEncryptedXml(wxService.getWxMpConfigStorage());
         }
+
 
         this.logger.debug("\n组装回复信息：{}", out);
         return out;

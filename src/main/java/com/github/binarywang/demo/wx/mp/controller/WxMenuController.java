@@ -100,7 +100,7 @@ public class WxMenuController {
                 String.format("%s://%s/wx/redirect/%s/greet", requestURL.getProtocol(), requestURL.getHost(), appid),
                 WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
             button34.setUrl(url);
-            this.logger.debug("\nbutton34链接======>>>>>>{}",url);
+            this.logger.debug("\nbutton34链接======>>>>>>{}",request);
         }
 
         button3.getSubButtons().add(button31);
@@ -109,6 +109,7 @@ public class WxMenuController {
         button3.getSubButtons().add(button34);
 
         this.wxService.switchover(appid);
+        this.logger.debug("\n创建菜单返回结果=====>>>>{}",this.wxService.getMenuService().menuCreate(menu));
         return this.wxService.getMenuService().menuCreate(menu);
     }
 
