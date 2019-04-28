@@ -72,7 +72,6 @@ public class WxPortalController {
                        @RequestParam("timestamp") String timestamp,
                        @RequestParam("nonce") String nonce,
                        @RequestParam("openid") String openid,
-                       @RequestParam(name = "status", required = false) String status,
                        @RequestParam(name = "encrypt_type", required = false) String encType,
                        @RequestParam(name = "msg_signature", required = false) String msgSignature) {
         this.logger.info("\n接收微信请求：[openid=[{}], [signature=[{}], encType=[{}], msgSignature=[{}],"
@@ -88,29 +87,29 @@ public class WxPortalController {
         }
 
         String out = null;
+
+        WxMpXmlMessage xmlMsg = WxMpXmlMessage.fromXml(requestBody);
+        this.logger.debug("\nxmlMsg===>>>{}", xmlMsg);
         if (encType == null) {
             // 明文传输的消息
+            this.logger.debug("\n");
 
             try {
-                WxMpXmlMessage xmlMsg = WxMpXmlMessage.fromXml(requestBody);
-                if (status.equals("success")) {
-                    this.logger.debug("\nxmlMsg===>>>{}", xmlMsg);
-                } else {
+                if (xmlMsg.getContent().equals("模板消息")) {
                     this.logger.debug("\n收到消息，需要回复!");
                     this.testSendTemplateMessage(openid);
+                } else {
+                    WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(requestBody);
+                    this.logger.debug("\n自动回复消息===>>>{}", inMessage);
+                    WxMpXmlOutMessage outMessage = this.route(inMessage);
+                    if (outMessage == null) {
+                        return "";
+                    }
+                    out = outMessage.toXml();
                 }
             } catch (WxErrorException e) {
                 e.printStackTrace();
             }
-
-//            WxMpXmlMessage inMessage = WxMpXmlMessage.fromXml(requestBody);
-//            this.logger.debug("\n自动回复消息===>>>{}", inMessage);
-//            WxMpXmlOutMessage outMessage = this.route(inMessage);
-//            if (outMessage == null) {
-//                return "";
-//            }
-//
-//            out = outMessage.toXml();
         } else if ("aes".equalsIgnoreCase(encType)) {
             // aes加密的消息
             WxMpXmlMessage inMessage = WxMpXmlMessage.fromEncryptedXml(requestBody, wxService.getWxMpConfigStorage(),
